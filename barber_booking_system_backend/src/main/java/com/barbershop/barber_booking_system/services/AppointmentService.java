@@ -128,4 +128,12 @@ public class AppointmentService {
                 a.getStatus().name()
         );
     }
+
+    public void confirm(Long id) {
+        repository.confirmAppointment(id);
+    }
+
+    public void cancel(Long id) {
+        repository.cancelAppointment(id);
+    }
 }

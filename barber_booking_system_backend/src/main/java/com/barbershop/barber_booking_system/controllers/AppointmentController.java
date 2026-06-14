@@ -34,6 +34,17 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getById(id));
     }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> confirm(@PathVariable Long id) {
+        service.confirm(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> cancel(@PathVariable Long id) {
+        service.cancel(id);
+        return ResponseEntity.ok().build();
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDTO> update(@PathVariable Long id, @RequestBody CreateAppointmentDTO dto) {
