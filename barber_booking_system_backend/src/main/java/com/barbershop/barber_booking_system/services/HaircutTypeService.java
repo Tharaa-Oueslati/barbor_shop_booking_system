@@ -6,6 +6,7 @@ import com.barbershop.barber_booking_system.entities.HaircutType;
 import com.barbershop.barber_booking_system.repositories.HaircutTypeRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class HaircutTypeService {
     public List<HaircutTypeDTO> getAll() {
         return repository.findAll()
                 .stream()
-                .map(h -> new HaircutTypeDTO(h.getId(), h.getName(), h.getPrice(), h.getDuration()))
+                .map(h -> new HaircutTypeDTO(h.getId(), h.getName(), h.getPrice().doubleValue(), h.getDuration()))
                 .toList();
     }
 
@@ -28,18 +29,31 @@ public class HaircutTypeService {
         HaircutType h = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Haircut type not found"));
 
-        return new HaircutTypeDTO(h.getId(), h.getName(), h.getPrice(), h.getDuration());
+        return new HaircutTypeDTO(h.getId(), h.getName(), h.getPrice().doubleValue(), h.getDuration());
     }
 
     public HaircutTypeDTO create(CreateHaircutTypeDTO dto) {
         HaircutType h = new HaircutType();
         h.setName(dto.name());
-        h.setPrice(dto.price());
+        h.setPrice(BigDecimal.valueOf(dto.price()));
         h.setDuration(dto.duration());
 
         HaircutType saved = repository.save(h);
 
-        return new HaircutTypeDTO(saved.getId(), saved.getName(), saved.getPrice(), saved.getDuration());
+        return new HaircutTypeDTO(saved.getId(), saved.getName(), saved.getPrice().doubleValue(), saved.getDuration());
+    }
+
+    public HaircutTypeDTO update(Long id, CreateHaircutTypeDTO dto) {
+        HaircutType h = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Haircut type not found"));
+
+        h.setName(dto.name());
+        h.setPrice(BigDecimal.valueOf(dto.price()));
+        h.setDuration(dto.duration());
+
+        HaircutType saved = repository.save(h);
+
+        return new HaircutTypeDTO(saved.getId(), saved.getName(), saved.getPrice().doubleValue(), saved.getDuration());
     }
 
     public void delete(Long id) {

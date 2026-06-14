@@ -1,7 +1,17 @@
 package com.barbershop.barber_booking_system.controllers;
 
+import com.barbershop.barber_booking_system.dto.AppointmentDTO;
+import com.barbershop.barber_booking_system.dto.CreateAppointmentDTO;
+import com.barbershop.barber_booking_system.services.AppointmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/appointments")
+@CrossOrigin(origins = "*")
 public class AppointmentController {
 
     private final AppointmentService service;
@@ -11,22 +21,28 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<AppointmentDTO> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<AppointmentDTO>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PostMapping
-    public AppointmentDTO create(@RequestBody CreateAppointmentDTO dto) {
-        return service.create(dto);
+    public ResponseEntity<AppointmentDTO> create(@RequestBody CreateAppointmentDTO dto) {
+        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public AppointmentDTO getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<AppointmentDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AppointmentDTO> update(@PathVariable Long id, @RequestBody CreateAppointmentDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,13 +1,10 @@
 package com.barbershop.barber_booking_system.services;
 
 
-import com.barbershop.barber_booking_system.dto.BarberDTO;
-import com.barbershop.barber_booking_system.dto.CreateBarberDTO;
 import com.barbershop.barber_booking_system.entities.Barber;
 import com.barbershop.barber_booking_system.repositories.BarberRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,44 +18,50 @@ public class BarberService {
         this.repository = repository;
     }
 
-    public List<BarberDTO> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(b -> new BarberDTO(b.getId(), b.getName(), b.getPhone(), b.isActive()))
-                .toList();
+    public List<Barber> getAllBarbers() {
+        return repository.findAll();
     }
 
-    public BarberDTO getById(Long id) {
-        Barber b = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Barber not found"));
-
-        return new BarberDTO(b.getId(), b.getName(), b.getPhone(), b.isActive());
+    public List<Barber> getActiveBarbers() {
+        return repository.findByActiveTrue();
     }
 
-    public BarberDTO create(CreateBarberDTO dto) {
-        Barber b = new Barber();
-        b.setName(dto.name());
-        b.setPhone(dto.phone());
-        b.setActive(true);
-
-        Barber saved = repository.save(b);
-
-        return new BarberDTO(saved.getId(), saved.getName(), saved.getPhone(), saved.isActive());
+    public Barber getBarberById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Barber not found with id: " + id));
     }
 
-    public BarberDTO update(Long id, CreateBarberDTO dto) {
-        Barber b = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Barber not found"));
-
-        b.setName(dto.name());
-        b.setPhone(dto.phone());
-
-        Barber saved = repository.save(b);
-
-        return new BarberDTO(saved.getId(), saved.getName(), saved.getPhone(), saved.isActive());
+    public Barber createBarber(Barber barber) {
+        barber.setActive(true);
+        return repository.save(barber);
     }
 
-    public void delete(Long id) {
+    public Barber updateBarber(Long id, Barber barber) {
+        Barber existing = getBarberById(id);
+        existing.setName(barber.getName());
+        existing.setPhone(barber.getPhone());
+        if (barber.getActive() != null) {
+            existing.setActive(barber.getActive());
+        }
+        return repository.save(existing);
+    }
+
+    public void deleteBarber(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Barber not found with id: " + id);
+        }
         repository.deleteById(id);
+    }
+
+    public Barber activateBarber(Long id) {
+        Barber barber = getBarberById(id);
+        barber.setActive(true);
+        return repository.save(barber);
+    }
+
+    public Barber deactivateBarber(Long id) {
+        Barber barber = getBarberById(id);
+        barber.setActive(false);
+        return repository.save(barber);
     }
 }
