@@ -1,6 +1,7 @@
 package com.barbershop.barber_booking_system.services;
 
 import com.barbershop.barber_booking_system.dto.AppointmentDTO;
+import com.barbershop.barber_booking_system.dto.BlockedSlotsDTO;
 import com.barbershop.barber_booking_system.dto.CreateAppointmentDTO;
 import com.barbershop.barber_booking_system.entities.Appointment;
 import com.barbershop.barber_booking_system.entities.AppointmentStatus;
@@ -35,7 +36,7 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public List<AppointmentDTO> getAll() {
-        return repository.findAllWithBarberAndHaircutType()
+        return repository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .toList();
@@ -196,4 +197,19 @@ public class AppointmentService {
             throw new IllegalArgumentException("Appointment must be within business hours (9:00 AM - 6:00 PM)");
         }
     }
+
+
+    @Transactional(readOnly = true)
+    public BlockedSlotsDTO getBlockedSlots(LocalDate date, Long barberId) {
+
+        List<Appointment> appointments =
+                repository.findByDateAndBarber(date, barberId);
+
+        List<String> blockedTimes = appointments.stream()
+                .map(a -> a.getStartTime().toString().substring(0, 5))
+                .toList();
+
+        return new BlockedSlotsDTO(blockedTimes);
+    }
+
 }

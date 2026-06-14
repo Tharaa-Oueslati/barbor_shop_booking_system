@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 // Import the Service
-import { HaircutServiceService } from "../../services/haircut-service.service";
+import { HaircutService } from "../../services/haircut.service";
 // Import the Model
-import { HaircutService } from "../../../models/haircut-service.model";
+import { HaircutModel } from "../../../models/haircut.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homepage',
@@ -14,10 +15,10 @@ import { HaircutService } from "../../../models/haircut-service.model";
 export class HomepageComponent implements OnInit {
 
   // 1. Initialize with an empty array
-  services: HaircutService[] = [];
+  servicesList: HaircutModel[] = [];
 
   // 2. Inject the Service class, not the interface
-  constructor(private haircutServiceService: HaircutServiceService) {
+  constructor(private haircutService: HaircutService,private router: Router,) {
   }
 
   ngOnInit(): void {
@@ -27,14 +28,17 @@ export class HomepageComponent implements OnInit {
 
   getServices() {
     // 3. Subscribe to the Observable to receive the data
-    this.haircutServiceService.getServices().subscribe({
-      next: (data: HaircutService[]) => {
-        this.services = data; // Assign the fetched data to your array
+    this.haircutService.getServices().subscribe({
+      next: (data: HaircutModel[]) => {
+        this.servicesList = data; // Assign the fetched data to your array
       },
       error: (error) => {
         console.error('There was an error fetching the services!', error);
       }
     });
+  }
+  NavigateToBooking(){
+        this.router.navigate(['/booking']);
   }
 
 }

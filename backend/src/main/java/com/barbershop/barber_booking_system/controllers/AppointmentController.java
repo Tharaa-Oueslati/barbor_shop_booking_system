@@ -1,12 +1,14 @@
 package com.barbershop.barber_booking_system.controllers;
 
 import com.barbershop.barber_booking_system.dto.AppointmentDTO;
+import com.barbershop.barber_booking_system.dto.BlockedSlotsDTO;
 import com.barbershop.barber_booking_system.dto.CreateAppointmentDTO;
 import com.barbershop.barber_booking_system.services.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,6 +25,16 @@ public class AppointmentController {
     @GetMapping
     public ResponseEntity<List<AppointmentDTO>> getAll() {
         return ResponseEntity.ok(service.getAll());
+    }
+
+    @GetMapping("/blocked-slots")
+    public ResponseEntity<BlockedSlotsDTO> getBlockedSlots(
+            @RequestParam String date,
+            @RequestParam Long barberId
+    ) {
+        return ResponseEntity.ok(
+                service.getBlockedSlots(LocalDate.parse(date), barberId)
+        );
     }
 
     @PostMapping
@@ -57,4 +69,6 @@ public class AppointmentController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

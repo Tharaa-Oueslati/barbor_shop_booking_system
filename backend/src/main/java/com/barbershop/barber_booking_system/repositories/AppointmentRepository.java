@@ -33,23 +33,26 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
                                   @Param("endTime") LocalTime endTime,
                                   @Param("excludeId") Long excludeId);
 
-    @Query("SELECT a FROM Appointment a JOIN FETCH a.barber JOIN FETCH a.haircutType")
-    List<Appointment> findAllWithBarberAndHaircutType();
+
 
     @Query("SELECT a FROM Appointment a JOIN FETCH a.barber JOIN FETCH a.haircutType WHERE a.id = :id")
     Optional<Appointment> findByIdWithBarberAndHaircutType(@Param("id") Long id);
 
-    // Barber dashboard
-    List<Appointment> findByBarberId(Long barberId);
 
-    // Barber schedule for a specific day
-    List<Appointment> findByBarberIdAndDate(Long barberId, LocalDate date);
 
-    // Admin filters
-    List<Appointment> findByStatus(AppointmentStatus status);
+    @Query("""
+    SELECT a FROM Appointment a
+    JOIN FETCH a.barber
+    WHERE a.date = :date
+    AND a.barber.id = :barberId
+""")
+    List<Appointment> findByDateAndBarber(
+            @Param("date") LocalDate date,
+            @Param("barberId") Long barberId
+    );
 
-    List<Appointment> findByDate(LocalDate date);
 
-    List<Appointment> findByBarberIdAndStatus(Long barberId, AppointmentStatus status);
+
+
 
 }

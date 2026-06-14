@@ -1,0 +1,171 @@
+<div class="bg-gray-50 min-h-screen font-sans text-gray-900 selection:bg-yellow-400 selection:text-black py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center relative overflow-hidden">
+
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-yellow-500/10 blur-3xl rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-0 right-10 w-64 h-64 bg-gray-200/50 blur-2xl rounded-full pointer-events-none"></div>
+
+  <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 max-w-3xl w-full p-8 md:p-12 relative z-10">
+
+    <div class="text-center mb-10">
+      <span class="text-yellow-600 font-bold tracking-widest text-xs uppercase mb-2 block">Secure Your Slot</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
+        Book Your Appointment
+      </h2>
+      <div class="w-12 h-1 bg-yellow-500 mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <form class="space-y-8" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 tracking-wide">Full Name</label>
+          <input
+            type="text"
+            formControlName="fullName"
+            placeholder="Enter your full name"
+            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 tracking-wide">Phone Number</label>
+          <input
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="e.g., 22 345 678"
+            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 tracking-wide flex justify-between">
+          <span>Email Address</span>
+          <span class="text-xs font-normal text-gray-400 italic">Optional</span>
+        </label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="example@email.com"
+          class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400">
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 tracking-wide mb-3">Select a Service</label>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          @for (service of servicesList; track service.id || $index) {
+            <label class="relative bg-white p-5 rounded-2xl border-2 border-gray-200 shadow-sm hover:border-yellow-400 hover:shadow-md has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-50/10 transition-all duration-200 cursor-pointer flex flex-col justify-between group">
+
+              <input
+                type="radio"
+                formControlName="serviceSelection"
+                [value]="service.id"
+                class="sr-only">
+
+              <div>
+                <div class="flex justify-between items-start">
+                  <p class="font-bold text-lg text-gray-900 group-hover:text-yellow-600 transition-colors">
+                    {{ service.name }}
+                  </p>
+                  <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center group-has-[:checked]:border-yellow-500 group-has-[:checked]:bg-yellow-500 transition-all duration-200">
+                    <div class="w-2 h-2 rounded-full bg-white scale-0 group-has-[:checked]:scale-100 transition-transform duration-200"></div>
+                  </div>
+                </div>
+
+                <p class="text-sm text-gray-500 mt-2 leading-relaxed">
+                  @if (service.name === 'Haircut') {
+                    Classic precision scissor and clipper cut tailored perfectly to your unique head shape.
+                  } @else if (service.name === 'Fade') {
+                    Advanced skin-to-hair gradient technique including custom taper, line-up, and razor neck clean.
+                  } @else if (service.name === 'Beard') {
+                    Detailed beard sculpting, trim, hot towel service, and sharp line finish with premium oils.
+                  } @else if (service.name === 'Color') {
+                    Premium gray coverage or custom bleaching treatments using hair-safe professional formulas.
+                  } @else {
+                    Premium grooming service personalized exactly to your preferences.
+                  }
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-baseline">
+                <span class="text-xs uppercase tracking-wider text-gray-400 font-medium">Price</span>
+                <p class="text-xl font-black text-gray-800">
+                  {{ service.price }} <span class="text-xs font-semibold text-gray-400">TND</span>
+                </p>
+              </div>
+            </label>
+          } @empty {
+            <div class="col-span-full text-center py-8 text-gray-400 border border-dashed border-gray-200 rounded-2xl animate-pulse">
+              Fetching premium service catalog...
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 tracking-wide">Choose Your Barber</label>
+        <div class="relative mt-2">
+          <select formControlName="barber" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 text-gray-700 appearance-none cursor-pointer">
+
+            <option value="" selected disabled>Select an available barber</option>
+
+            @for (barber of activeBarbers; track barber.id) {
+              <option [value]="barber.id">{{ barber.name }}</option>
+            }
+
+          </select>
+
+          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 tracking-wide">Appointment Date</label>
+          <input
+            type="date"
+            formControlName="date"
+            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 text-gray-700 cursor-pointer">
+        </div>
+
+        @if (bookingForm.get('date')?.value && bookingForm.get('barber')?.value) {
+          <div class="animate-fadeIn">
+            <label class="block text-sm font-semibold text-gray-700 tracking-wide mb-3">Available Time Slots</label>
+
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+              @for (time of timeSlots; track $index) {
+                <label
+                  class="relative border-2 rounded-xl py-3 text-center font-semibold text-sm transition-all duration-200"
+                  [ngClass]="blockedTimes.includes(time)
+                    ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-60'
+                    : 'bg-white border-gray-200 text-gray-700 cursor-pointer hover:border-yellow-400 hover:shadow-sm has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-50/30 has-[:checked]:text-yellow-700'">
+
+                  <input
+                    type="radio"
+                    formControlName="time"
+                    [value]="time"
+                    [disabled]="blockedTimes.includes(time)"
+                    class="sr-only">
+
+                  {{ time }}
+                </label>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="pt-4">
+        <button
+          type="submit"
+          [disabled]="bookingForm.invalid"
+          class="w-full py-4 bg-yellow-500 hover:bg-yellow-400 disabled:bg-gray-300 disabled:cursor-not-allowed text-black font-bold rounded-xl shadow-lg shadow-yellow-500/10 hover:shadow-yellow-500/20 active:scale-[0.99] transition-all duration-300 text-lg tracking-wide">
+          Confirm Appointment
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
