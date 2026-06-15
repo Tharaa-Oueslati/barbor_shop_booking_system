@@ -115,9 +115,9 @@ export class BookingComponent implements OnInit {
     this.bookingService.getBlockedSlots(date, barberId)
       .subscribe({
         next: (res) => {
-          const bookedSlots = res.blockedTimes || [];
+          const occupiedSlots = res.blockedTimes || [];
           const duration = this.getSelectedServiceDuration();
-          this.blockedTimes = this.calculateBlockedSlots(bookedSlots, duration);
+          this.blockedTimes = this.calculateUnavailableStartTimes(occupiedSlots, duration);
         },
         error: (err) => {
           console.error('Error fetching blocked slots:', err);
@@ -126,29 +126,26 @@ export class BookingComponent implements OnInit {
       });
   }
 
-  private calculateBlockedSlots(bookedSlots: string[], serviceDuration: number): string[] {
-    const expandedBlocks = new Set<string>();
+  private calculateUnavailableStartTimes(occupiedSlots: string[], serviceDuration: number): string[] {
+    const unavailable = new Set<string>();
     const slotsNeeded = Math.ceil(serviceDuration / 30);
 
-    bookedSlots.forEach(time => {
-      const index = this.timeSlots.indexOf(time);
-
-      if (index !== -1) {
-        for (let i = 0; i < slotsNeeded; i++) {
-          if (index + i < this.timeSlots.length) {
-            expandedBlocks.add(this.timeSlots[index + i]);
-          }
-        }
-
-        for (let i = 1; i < slotsNeeded; i++) {
-          if (index - i >= 0) {
-            expandedBlocks.add(this.timeSlots[index - i]);
-          }
+    for (let startIndex = 0; startIndex < this.timeSlots.length; startIndex++) {
+      for (let offset = 0; offset < slotsNeeded; offset++) {
+        const checkIndex = startIndex + offset;
+        if (checkIndex < this.timeSlots.length && occupiedSlots.includes(this.timeSlots[checkIndex])) {
+          unavailable.add(this.timeSlots[startIndex]);
+          break;
         }
       }
-    });
 
-    return Array.from(expandedBlocks);
+      const endIndex = startIndex + slotsNeeded;
+      if (endIndex > this.timeSlots.length) {
+        unavailable.add(this.timeSlots[startIndex]);
+      }
+    }
+
+    return Array.from(unavailable);
   }
 
   onSubmit() {

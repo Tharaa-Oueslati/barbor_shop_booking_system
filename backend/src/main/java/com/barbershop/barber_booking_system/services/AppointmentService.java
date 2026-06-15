@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +24,7 @@ public class AppointmentService {
 
     private static final LocalTime BUSINESS_OPEN = LocalTime.of(9, 0);
     private static final LocalTime BUSINESS_CLOSE = LocalTime.of(18, 0);
+    private static final int SLOT_DURATION_MINUTES = 30;
 
     private final AppointmentRepository repository;
     private final BarberRepository barberRepository;
@@ -201,15 +203,29 @@ public class AppointmentService {
 
     @Transactional(readOnly = true)
     public BlockedSlotsDTO getBlockedSlots(LocalDate date, Long barberId) {
+        List<Appointment> appointments = repository.findByDateAndBarber(date, barberId);
 
-        List<Appointment> appointments =
-                repository.findByDateAndBarber(date, barberId);
+        List<String> blockedTimes = new ArrayList<>();
 
-        List<String> blockedTimes = appointments.stream()
-                .map(a -> a.getStartTime().toString().substring(0, 5))
-                .toList();
+        for (Appointment appointment : appointments) {
+            if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
+                continue;
+            }
+
+            LocalTime current = appointment.getStartTime();
+            LocalTime endTime = appointment.getEndTime();
+
+            while (current.isBefore(endTime)) {
+                blockedTimes.add(formatTime(current));
+                current = current.plusMinutes(SLOT_DURATION_MINUTES);
+            }
+        }
 
         return new BlockedSlotsDTO(blockedTimes);
+    }
+
+    private String formatTime(LocalTime time) {
+        return String.format("%02d:%02d", time.getHour(), time.getMinute());
     }
 
 }
