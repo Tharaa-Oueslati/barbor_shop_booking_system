@@ -205,23 +205,20 @@ public class AppointmentService {
     public BlockedSlotsDTO getBlockedSlots(LocalDate date, Long barberId) {
         List<Appointment> appointments = repository.findByDateAndBarber(date, barberId);
 
-        List<String> blockedTimes = new ArrayList<>();
+        List<BlockedSlotsDTO.BookedSlotDTO> bookedSlots = new ArrayList<>();
 
         for (Appointment appointment : appointments) {
             if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
                 continue;
             }
 
-            LocalTime current = appointment.getStartTime();
-            LocalTime endTime = appointment.getEndTime();
+            String startTime = formatTime(appointment.getStartTime());
+            int duration = appointment.getHaircutType().getDuration();
 
-            while (current.isBefore(endTime)) {
-                blockedTimes.add(formatTime(current));
-                current = current.plusMinutes(SLOT_DURATION_MINUTES);
-            }
+            bookedSlots.add(new BlockedSlotsDTO.BookedSlotDTO(startTime, duration));
         }
 
-        return new BlockedSlotsDTO(blockedTimes);
+        return new BlockedSlotsDTO(bookedSlots);
     }
 
     private String formatTime(LocalTime time) {

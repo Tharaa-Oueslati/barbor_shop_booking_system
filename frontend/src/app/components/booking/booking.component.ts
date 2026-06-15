@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { BookingService, CreateBookingRequest } from "../../services/booking.service";
+import { BookingService, CreateBookingRequest, BookedSlot } from "../../services/booking.service";
 import { Router } from "@angular/router";
 import { HaircutService } from "../../services/haircut.service";
 import { HaircutModel } from "../../../models/haircut.model";
@@ -27,7 +27,7 @@ export class BookingComponent implements OnInit {
     '15:00','15:30','16:00','16:30','17:00','17:30'
   ];
 
-  blockedTimes: string[] = [];
+  blockedTimes: Set<string> = new Set();
   isSubmitting = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -106,46 +106,46 @@ export class BookingComponent implements OnInit {
     const barberId = Number(this.bookingForm.get('barber')?.value);
 
     if (!date || !barberId) {
-      this.blockedTimes = [];
+      this.blockedTimes.clear();
       return;
     }
 
-    this.blockedTimes = [];
+    this.blockedTimes.clear();
 
     this.bookingService.getBlockedSlots(date, barberId)
       .subscribe({
         next: (res) => {
-          const occupiedSlots = res.blockedTimes || [];
-          const duration = this.getSelectedServiceDuration();
-          this.blockedTimes = this.calculateUnavailableStartTimes(occupiedSlots, duration);
+          const bookedSlots = res.bookedSlots || [];
+          this.blockedTimes = this.calculateBlockedSlots(bookedSlots);
         },
         error: (err) => {
           console.error('Error fetching blocked slots:', err);
-          this.blockedTimes = [];
+          this.blockedTimes.clear();
         }
       });
   }
 
-  private calculateUnavailableStartTimes(occupiedSlots: string[], serviceDuration: number): string[] {
-    const unavailable = new Set<string>();
-    const slotsNeeded = Math.ceil(serviceDuration / 30);
+  private calculateBlockedSlots(bookedSlots: BookedSlot[]): Set<string> {
+    const blocked = new Set<string>();
 
-    for (let startIndex = 0; startIndex < this.timeSlots.length; startIndex++) {
-      for (let offset = 0; offset < slotsNeeded; offset++) {
-        const checkIndex = startIndex + offset;
-        if (checkIndex < this.timeSlots.length && occupiedSlots.includes(this.timeSlots[checkIndex])) {
-          unavailable.add(this.timeSlots[startIndex]);
-          break;
+    for (const slot of bookedSlots) {
+      const startIndex = this.timeSlots.indexOf(slot.startTime);
+      if (startIndex === -1) continue;
+
+      const slotsToBlock = Math.ceil(slot.duration / 30);
+
+      for (let i = 0; i < slotsToBlock; i++) {
+        if (startIndex + i < this.timeSlots.length) {
+          blocked.add(this.timeSlots[startIndex + i]);
         }
-      }
-
-      const endIndex = startIndex + slotsNeeded;
-      if (endIndex > this.timeSlots.length) {
-        unavailable.add(this.timeSlots[startIndex]);
       }
     }
 
-    return Array.from(unavailable);
+    return blocked;
+  }
+
+  isSlotBlocked(time: string): boolean {
+    return this.blockedTimes.has(time);
   }
 
   onSubmit() {

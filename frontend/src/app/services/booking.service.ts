@@ -25,6 +25,15 @@ export interface BookingResponse {
   status: string;
 }
 
+export interface BookedSlot {
+  startTime: string;
+  duration: number;
+}
+
+export interface BlockedSlotsResponse {
+  bookedSlots: BookedSlot[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,8 +46,8 @@ export class BookingService {
     return this.http.post<BookingResponse>(this.apiUrl, bookingData);
   }
 
-  getBlockedSlots(date: string, barberId: number) {
-    return this.http.get<{ blockedTimes: string[] }>(
+  getBlockedSlots(date: string, barberId: number): Observable<BlockedSlotsResponse> {
+    return this.http.get<BlockedSlotsResponse>(
       `${this.apiUrl}/blocked-slots`,
       {
         params: { date, barberId }
