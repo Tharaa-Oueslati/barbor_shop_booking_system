@@ -13,6 +13,21 @@
       <div class="w-12 h-1 bg-yellow-500 mx-auto mt-4 rounded-full"></div>
     </div>
 
+    @if (successMessage) {
+      <div class="mb-8 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 font-medium text-center">
+        <svg class="w-5 h-5 inline-block mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        {{ successMessage }}
+      </div>
+    }
+
+    @if (errorMessage) {
+      <div class="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 font-medium text-center">
+        <svg class="w-5 h-5 inline-block mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        {{ errorMessage }}
+        <button (click)="errorMessage = null" class="ml-3 text-red-600 hover:text-red-800 font-semibold">Dismiss</button>
+      </div>
+    }
+
     <form class="space-y-8" [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -22,7 +37,11 @@
             type="text"
             formControlName="fullName"
             placeholder="Enter your full name"
-            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400">
+            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+            [class.border-red-400]="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
+          @if (bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched) {
+            <p class="text-red-500 text-sm mt-1">Please enter your full name</p>
+          }
         </div>
 
         <div>
@@ -31,7 +50,11 @@
             type="tel"
             formControlName="phoneNumber"
             placeholder="e.g., 22 345 678"
-            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400">
+            class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 placeholder:text-gray-400"
+            [class.border-red-400]="bookingForm.get('phoneNumber')?.invalid && bookingForm.get('phoneNumber')?.touched">
+          @if (bookingForm.get('phoneNumber')?.invalid && bookingForm.get('phoneNumber')?.touched) {
+            <p class="text-red-500 text-sm mt-1">Please enter a valid phone number</p>
+          }
         </div>
       </div>
 
@@ -72,16 +95,10 @@
                 </div>
 
                 <p class="text-sm text-gray-500 mt-2 leading-relaxed">
-                  @if (service.name === 'Haircut') {
-                    Classic precision scissor and clipper cut tailored perfectly to your unique head shape.
-                  } @else if (service.name === 'Fade') {
-                    Advanced skin-to-hair gradient technique including custom taper, line-up, and razor neck clean.
-                  } @else if (service.name === 'Beard') {
-                    Detailed beard sculpting, trim, hot towel service, and sharp line finish with premium oils.
-                  } @else if (service.name === 'Color') {
-                    Premium gray coverage or custom bleaching treatments using hair-safe professional formulas.
+                  @if (service.duration) {
+                    Duration: {{ service.duration }} min
                   } @else {
-                    Premium grooming service personalized exactly to your preferences.
+                    Premium grooming service
                   }
                 </p>
               </div>
@@ -126,6 +143,7 @@
           <input
             type="date"
             formControlName="date"
+            [min]="todayDate"
             class="w-full mt-2 px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500/40 focus:border-yellow-500 focus:bg-white transition-all duration-200 text-gray-700 cursor-pointer">
         </div>
 
@@ -159,9 +177,17 @@
       <div class="pt-4">
         <button
           type="submit"
-          [disabled]="bookingForm.invalid"
-          class="w-full py-4 bg-yellow-500 hover:bg-yellow-400 disabled:bg-gray-300 disabled:cursor-not-allowed text-black font-bold rounded-xl shadow-lg shadow-yellow-500/10 hover:shadow-yellow-500/20 active:scale-[0.99] transition-all duration-300 text-lg tracking-wide">
-          Confirm Appointment
+          [disabled]="bookingForm.invalid || isSubmitting"
+          class="w-full py-4 bg-yellow-500 hover:bg-yellow-400 disabled:bg-gray-300 disabled:cursor-not-allowed text-black font-bold rounded-xl shadow-lg shadow-yellow-500/10 hover:shadow-yellow-500/20 active:scale-[0.99] transition-all duration-300 text-lg tracking-wide flex items-center justify-center">
+          @if (isSubmitting) {
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+          } @else {
+            Confirm Appointment
+          }
         </button>
       </div>
 

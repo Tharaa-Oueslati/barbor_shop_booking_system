@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { BookingService } from "../../services/booking.service";
+import { BookingService, CreateBookingRequest } from "../../services/booking.service";
 import { Router } from "@angular/router";
 import { HaircutService } from "../../services/haircut.service";
 import { HaircutModel } from "../../../models/haircut.model";
@@ -24,10 +24,14 @@ export class BookingComponent implements OnInit {
   timeSlots: string[] = [
     '09:00','09:30','10:00','10:30','11:00','11:30',
     '12:00','12:30','13:00','13:30','14:00','14:30',
-    '15:00','15:30','16:00','16:30','17:00'
+    '15:00','15:30','16:00','16:30','17:00','17:30'
   ];
 
   blockedTimes: string[] = [];
+  isSubmitting = false;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  todayDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +48,6 @@ export class BookingComponent implements OnInit {
     this.initListeners();
   }
 
-  // ---------------- FORM INIT ----------------
   initForm() {
     this.bookingForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -57,15 +60,16 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  // ---------------- LOAD BARBERS ----------------
   getActiveBarbers() {
     this.barberService.getActiveBarbers().subscribe({
       next: (data) => this.activeBarbers = data,
-      error: (err) => console.error('Error loading barbers:', err)
+      error: (err) => {
+        console.error('Error loading barbers:', err);
+        this.errorMessage = 'Failed to load barbers. Please try again.';
+      }
     });
   }
 
-  // ---------------- LISTENERS ----------------
   initListeners() {
     this.bookingForm.get('date')?.valueChanges.subscribe(() => {
       this.checkAvailability();
@@ -74,17 +78,29 @@ export class BookingComponent implements OnInit {
     this.bookingForm.get('barber')?.valueChanges.subscribe(() => {
       this.checkAvailability();
     });
-  }
 
-  // ---------------- LOAD SERVICES ----------------
-  getServices() {
-    this.haircutService.getServices().subscribe({
-      next: (data) => this.servicesList = data,
-      error: (err) => console.error('Error loading services:', err)
+    this.bookingForm.get('serviceSelection')?.valueChanges.subscribe(() => {
+      this.checkAvailability();
     });
   }
 
-  // ---------------- AVAILABILITY CHECK ----------------
+  getServices() {
+    this.haircutService.getServices().subscribe({
+      next: (data) => this.servicesList = data,
+      error: (err) => {
+        console.error('Error loading services:', err);
+        this.errorMessage = 'Failed to load services. Please try again.';
+      }
+    });
+  }
+
+  getSelectedServiceDuration(): number {
+    const serviceId = this.bookingForm.get('serviceSelection')?.value;
+    if (!serviceId) return 60;
+    const service = this.servicesList.find(s => s.id === Number(serviceId));
+    return service?.duration || 60;
+  }
+
   checkAvailability() {
     const date = this.bookingForm.get('date')?.value;
     const barberId = Number(this.bookingForm.get('barber')?.value);
@@ -100,8 +116,8 @@ export class BookingComponent implements OnInit {
       .subscribe({
         next: (res) => {
           const bookedSlots = res.blockedTimes || [];
-          // Process existing slots to calculate the 1-hour block windows
-          this.blockedTimes = this.calculateOneHourBlocks(bookedSlots);
+          const duration = this.getSelectedServiceDuration();
+          this.blockedTimes = this.calculateBlockedSlots(bookedSlots, duration);
         },
         error: (err) => {
           console.error('Error fetching blocked slots:', err);
@@ -110,49 +126,66 @@ export class BookingComponent implements OnInit {
       });
   }
 
-  // ---------------- HELPER: 1-HOUR BLOCKING LOGIC ----------------
-  private calculateOneHourBlocks(bookedSlots: string[]): string[] {
+  private calculateBlockedSlots(bookedSlots: string[], serviceDuration: number): string[] {
     const expandedBlocks = new Set<string>();
+    const slotsNeeded = Math.ceil(serviceDuration / 30);
 
     bookedSlots.forEach(time => {
       const index = this.timeSlots.indexOf(time);
 
       if (index !== -1) {
-        // 1. Block the exact booked slot (e.g., 10:00)
-        expandedBlocks.add(this.timeSlots[index]);
-
-        // 2. Block the next 30-min slot (e.g., 10:30) to fulfill the 1-hour duration
-        if (index + 1 < this.timeSlots.length) {
-          expandedBlocks.add(this.timeSlots[index + 1]);
+        for (let i = 0; i < slotsNeeded; i++) {
+          if (index + i < this.timeSlots.length) {
+            expandedBlocks.add(this.timeSlots[index + i]);
+          }
         }
 
-        // 3. Block the previous 30-min slot (e.g., 09:30) to prevent a new booking
-        // from running into the start of this existing appointment
-        if (index - 1 >= 0) {
-          expandedBlocks.add(this.timeSlots[index - 1]);
+        for (let i = 1; i < slotsNeeded; i++) {
+          if (index - i >= 0) {
+            expandedBlocks.add(this.timeSlots[index - i]);
+          }
         }
       }
     });
 
-    // Convert Set back to array for template usage
     return Array.from(expandedBlocks);
   }
 
-  // ---------------- SUBMIT ----------------
   onSubmit() {
     if (this.bookingForm.invalid) {
       this.bookingForm.markAllAsTouched();
       return;
     }
 
-    this.bookingService.createBooking(this.bookingForm.value)
+    this.isSubmitting = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+
+    const formValue = this.bookingForm.value;
+    const request: CreateBookingRequest = {
+      clientName: formValue.fullName,
+      clientPhone: formValue.phoneNumber,
+      clientEmail: formValue.email || undefined,
+      barberId: Number(formValue.barber),
+      haircutTypeId: Number(formValue.serviceSelection),
+      date: formValue.date,
+      startTime: formValue.time
+    };
+
+    this.bookingService.createBooking(request)
       .subscribe({
-        next: () => {
-          console.log('Booking created successfully');
-          this.router.navigate(['/']);
+        next: (response) => {
+          this.isSubmitting = false;
+          this.successMessage = `Appointment booked successfully! Your booking ID is ${response.id}.`;
+          this.bookingForm.reset();
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 2000);
         },
         error: (err) => {
+          this.isSubmitting = false;
           console.error('Booking failed:', err);
+          this.errorMessage = err.error?.message || 'Failed to create appointment. The selected time slot may no longer be available.';
         }
       });
   }
