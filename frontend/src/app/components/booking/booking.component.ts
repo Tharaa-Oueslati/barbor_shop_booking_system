@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AppointmentsService, CreateBookingRequest, BookedSlot } from "../../services/appointments.service";
 import { Router } from "@angular/router";
@@ -11,7 +12,7 @@ import { BarberService } from "../../services/barber.service";
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass,CommonModule],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
@@ -63,7 +64,7 @@ export class BookingComponent implements OnInit {
       email: [''],
       serviceSelection: ['', Validators.required],
       barber: ['', Validators.required],
-      date: ['', Validators.required],
+      date: [''],
       time: ['', Validators.required]
     });
   }
@@ -187,5 +188,21 @@ export class BookingComponent implements OnInit {
           this.errorMessage = err.error?.message || 'Failed to create appointment. The selected time slot may no longer be available.';
         }
       });
+  }
+  openDatePicker(input: HTMLInputElement) {
+    // showPicker() is supported in modern Chrome, Edge, and recent Firefox/Safari
+    if (typeof (input as any).showPicker === 'function') {
+      (input as any).showPicker();
+    } else {
+      input.focus();
+      input.click();
+    }
+  }
+
+  getServiceIcon(serviceName: string): 'scissors' | 'razor' | 'comb' {
+    const name = serviceName.toLowerCase();
+    if (name.includes('beard') || name.includes('barbe')) return 'razor';
+    if (name.includes('style') || name.includes('soin')) return 'comb';
+    return 'scissors';
   }
 }
