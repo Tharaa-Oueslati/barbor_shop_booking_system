@@ -27,6 +27,12 @@ A full-stack barber shop appointment booking system with role-based dashboards, 
 
 ![Booking - Time Slots](screenshots/booking-timeslots.png)
 
+### Booking — Booking Ticket Number
+> After filling the booking form and confirming .A ticket number is provided to the client
+
+![Booking - Service Selection](screenshots/booking-ticket-number.png)
+
+
 ### Barber Dashboard
 > Barbers see their appointments grouped by date with client info, service, and time. A confirmation modal shows full appointment details before confirming.
 
