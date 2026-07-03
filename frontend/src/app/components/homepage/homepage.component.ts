@@ -22,6 +22,11 @@ export class HomepageComponent implements OnInit {
   currentUser: UserModel | null = null;
   validAppointments: AppointmentModel[] = [];
 
+  // Cancellation modal state
+  appointmentToCancel: AppointmentModel | null = null;
+  isCancelling = false;
+  cancelError: string | null = null;
+
   constructor(
     private haircutService: HaircutService,
     private router: Router,
@@ -33,10 +38,9 @@ export class HomepageComponent implements OnInit {
     this.getServices();
     this.isLoggedIn  = this.authService.isLoggedIn();
     this.currentUser = this.authService.getCurrentUser();
-    if(this.currentUser){
+    if (this.currentUser) {
       this.getValidAppointments(this.currentUser.username);
     }
-
   }
 
   getServices() {
@@ -61,6 +65,46 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  // Only pending/confirmed tickets are cancellable — opens the confirmation modal
+  onTicketClick(appointment: AppointmentModel) {
+    if (appointment.status !== 'PENDING' && appointment.status !== 'CONFIRMED') {
+      return;
+    }
+    this.appointmentToCancel = appointment;
+    this.cancelError = null;
+  }
+
+  closeCancelModal() {
+    if (this.isCancelling) return; // don't allow closing mid-request
+    this.appointmentToCancel = null;
+    this.cancelError = null;
+  }
+
+  confirmCancelAppointment() {
+    if (!this.appointmentToCancel) return;
+
+    const id = this.appointmentToCancel.id;
+    this.isCancelling = true;
+    this.cancelError = null;
+
+    this.appointmentsService.cancelAppointments(id).subscribe({
+      next: () => {
+        // Reflect the cancellation locally instead of refetching everything
+        const target = this.validAppointments.find(a => a.id === id);
+        if (target) {
+          target.status = 'CANCELLED';
+        }
+        this.isCancelling = false;
+        this.appointmentToCancel = null;
+      },
+      error: (err) => {
+        console.error('Error cancelling appointment', err);
+        this.cancelError = 'Could not cancel this appointment. Please try again.';
+        this.isCancelling = false;
+      }
+    });
+  }
+
   NavigateToBooking() {
     this.router.navigate(['/booking']);
   }
@@ -68,6 +112,5 @@ export class HomepageComponent implements OnInit {
   NavigateToLogin() {
     this.router.navigate(['/login']);
   }
-
 
 }

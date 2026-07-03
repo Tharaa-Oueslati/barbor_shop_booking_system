@@ -68,7 +68,11 @@ export class AppointmentsService {
     return this.http.get<AppointmentModel[]>(`${this.baseUrl}/barbers/${barberId}/appointments`);
   }
 
-  getValidAppointments(clientName:string){
+  getValidAppointments(clientName:string):Observable<AppointmentModel[]> {
     return this.http.get<AppointmentModel[]>(`${this.baseUrl}/appointments/tickets?clientName=${clientName}`);
+  }
+
+  cancelAppointments(AppointmentId:number) {
+    return this.http.patch<void>(`${this.baseUrl}/appointments/${AppointmentId}/cancel`,{});
   }
 }

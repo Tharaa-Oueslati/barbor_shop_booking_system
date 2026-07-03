@@ -11,7 +11,7 @@ import {UserModel} from "../models/UserModel";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
+  title:string="Barber Shop Booking System";
   isLoggedIn = false;
   currentUser: UserModel | null = null;
 
@@ -35,6 +35,7 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
+
+    window.location.reload();
   }
 }
