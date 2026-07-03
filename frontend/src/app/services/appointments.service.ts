@@ -67,4 +67,8 @@ export class AppointmentsService {
 
     return this.http.get<AppointmentModel[]>(`${this.baseUrl}/barbers/${barberId}/appointments`);
   }
+
+  getValidAppointments(clientName:string){
+    return this.http.get<AppointmentModel[]>(`${this.baseUrl}/appointments/tickets?clientName=${clientName}`);
+  }
 }

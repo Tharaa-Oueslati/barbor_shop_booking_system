@@ -70,5 +70,10 @@ public class AppointmentController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/tickets")
+    public ResponseEntity<List<AppointmentDTO>> getValidTickets(@RequestParam String clientName) {
+        return ResponseEntity.ok(service.getValidTickets(clientName));
+    }
+
 
 }

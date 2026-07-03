@@ -11,6 +11,7 @@ import com.barbershop.barber_booking_system.repositories.AppointmentRepository;
 import com.barbershop.barber_booking_system.repositories.BarberRepository;
 import com.barbershop.barber_booking_system.repositories.HaircutTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,12 @@ public class AppointmentService {
         this.repository = repository;
         this.barberRepository = barberRepository;
         this.haircutTypeRepository = haircutTypeRepository;
+    }
+
+    public  List<AppointmentDTO> getValidTickets(String clientName) {
+        return  this.repository.findValidAppointmentsByClientName(clientName).stream()
+                .map(this::toDTO).toList();
+
     }
 
     @Transactional(readOnly = true)
@@ -234,5 +241,7 @@ public class AppointmentService {
                 .map(this::toDTO)
                 .toList();
     }
+
+
 
 }

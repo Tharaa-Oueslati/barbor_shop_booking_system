@@ -62,6 +62,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByBarberId(@Param("barberId") Long barberId);
 
 
+    @Query("""
+    SELECT a FROM Appointment a
+    JOIN FETCH a.barber
+    JOIN FETCH a.haircutType
+    WHERE a.clientName = :clientName
+    AND a.date >= CURRENT_DATE
+    ORDER BY a.date ASC, a.startTime ASC
+""")
+    List<Appointment> findValidAppointmentsByClientName(@Param("clientName") String clientName);
+
+
 
 
 

@@ -5,6 +5,8 @@ import { HaircutModel } from "../../../models/haircut.model";
 import { Router } from "@angular/router";
 import { AuthentificationService } from "../../services/authentification.service";
 import { UserModel} from "../../../models/UserModel";
+import {AppointmentsService} from "../../services/appointments.service";
+import {AppointmentModel} from "../../../models/AppointmentModel";
 
 @Component({
   selector: 'app-homepage',
@@ -18,17 +20,23 @@ export class HomepageComponent implements OnInit {
   servicesList: HaircutModel[] = [];
   isLoggedIn = false;
   currentUser: UserModel | null = null;
+  validAppointments: AppointmentModel[] = [];
 
   constructor(
     private haircutService: HaircutService,
     private router: Router,
     private authService: AuthentificationService,
+    private appointmentsService: AppointmentsService
   ) {}
 
   ngOnInit(): void {
     this.getServices();
     this.isLoggedIn  = this.authService.isLoggedIn();
     this.currentUser = this.authService.getCurrentUser();
+    if(this.currentUser){
+      this.getValidAppointments(this.currentUser.username);
+    }
+
   }
 
   getServices() {
@@ -42,6 +50,17 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  getValidAppointments(clientName: string) {
+    this.appointmentsService.getValidAppointments(clientName).subscribe({
+      next: (data) => {
+        this.validAppointments = data;
+      },
+      error: (err) => {
+        console.error('Error fetching valid appointments', err);
+      }
+    });
+  }
+
   NavigateToBooking() {
     this.router.navigate(['/booking']);
   }
@@ -49,4 +68,6 @@ export class HomepageComponent implements OnInit {
   NavigateToLogin() {
     this.router.navigate(['/login']);
   }
+
+
 }
