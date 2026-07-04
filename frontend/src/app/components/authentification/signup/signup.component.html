@@ -4,9 +4,9 @@
 
     <!-- Brand -->
     <div class="text-center mb-8">
-      <span class="text-yellow-500 font-bold tracking-widest text-sm uppercase block mb-2">Premium Grooming</span>
-      <h1 class="text-3xl font-extrabold text-gray-900">Create Account</h1>
-      <p class="text-gray-500 mt-2 text-sm">Join us and book your next appointment with ease</p>
+      <span class="text-yellow-500 font-bold tracking-widest text-sm uppercase block mb-2">{{ 'home.heroTagline' | translate }}</span>
+      <h1 class="text-3xl font-extrabold text-gray-900">{{ 'auth.createAccount' | translate }}</h1>
+      <p class="text-gray-500 mt-2 text-sm">{{ 'auth.createAccountSubtitle' | translate }}</p>
     </div>
 
     <!-- Card -->
@@ -26,7 +26,7 @@
 
         <!-- Username -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">{{ 'auth.username' | translate }}</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,18 +37,18 @@
             <input
               formControlName="username"
               type="text"
-              placeholder="Choose a username"
+              [placeholder]="'auth.username' | translate"
               class="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
               [class.border-red-400]="isInvalid('username')"
               [class.bg-red-50]="isInvalid('username')"
             />
           </div>
-          <p *ngIf="isInvalid('username')" class="mt-1.5 text-xs text-red-500 pl-1">Username is required.</p>
+          <p *ngIf="isInvalid('username')" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.usernameRequired' | translate }}</p>
         </div>
 
         <!-- Email -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">{{ 'auth.email' | translate }}</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,19 +59,19 @@
             <input
               formControlName="email"
               type="email"
-              placeholder="Enter your email"
+              [placeholder]="'auth.email' | translate"
               class="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
               [class.border-red-400]="isInvalid('email')"
               [class.bg-red-50]="isInvalid('email')"
             />
           </div>
-          <p *ngIf="isInvalid('email') && signupForm.get('email')?.errors?.['required']" class="mt-1.5 text-xs text-red-500 pl-1">Email is required.</p>
-          <p *ngIf="isInvalid('email') && signupForm.get('email')?.errors?.['email']" class="mt-1.5 text-xs text-red-500 pl-1">Please enter a valid email.</p>
+          <p *ngIf="isInvalid('email') && signupForm.get('email')?.errors?.['required']" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.emailRequired' | translate }}</p>
+          <p *ngIf="isInvalid('email') && signupForm.get('email')?.errors?.['email']" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.invalidEmail' | translate }}</p>
         </div>
 
         <!-- Password -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">{{ 'auth.password' | translate }}</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@
             <input
               formControlName="password"
               [type]="showPassword ? 'text' : 'password'"
-              placeholder="Create a password"
+              [placeholder]="'auth.password' | translate"
               class="w-full pl-11 pr-12 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
               [class.border-red-400]="isInvalid('password')"
               [class.bg-red-50]="isInvalid('password')"
@@ -99,13 +99,13 @@
               </svg>
             </button>
           </div>
-          <p *ngIf="isInvalid('password') && signupForm.get('password')?.errors?.['required']" class="mt-1.5 text-xs text-red-500 pl-1">Password is required.</p>
-          <p *ngIf="isInvalid('password') && signupForm.get('password')?.errors?.['minlength']" class="mt-1.5 text-xs text-red-500 pl-1">Password must be at least 6 characters.</p>
+          <p *ngIf="isInvalid('password') && signupForm.get('password')?.errors?.['required']" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.passwordRequired' | translate }}</p>
+          <p *ngIf="isInvalid('password') && signupForm.get('password')?.errors?.['minlength']" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.passwordMinLength' | translate }}</p>
         </div>
 
         <!-- Confirm Password -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-1.5">Confirm Password</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-1.5">{{ 'auth.confirmPassword' | translate }}</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +116,7 @@
             <input
               formControlName="confirmPassword"
               [type]="showConfirmPassword ? 'text' : 'password'"
-              placeholder="Repeat your password"
+              [placeholder]="'auth.confirmPassword' | translate"
               class="w-full pl-11 pr-12 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
               [class.border-red-400]="isInvalid('confirmPassword') || (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched)"
               [class.bg-red-50]="isInvalid('confirmPassword') || (signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched)"
@@ -133,9 +133,9 @@
               </svg>
             </button>
           </div>
-          <p *ngIf="isInvalid('confirmPassword')" class="mt-1.5 text-xs text-red-500 pl-1">Please confirm your password.</p>
+          <p *ngIf="isInvalid('confirmPassword')" class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.passwordRequired' | translate }}</p>
           <p *ngIf="signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched"
-             class="mt-1.5 text-xs text-red-500 pl-1">Passwords do not match.</p>
+             class="mt-1.5 text-xs text-red-500 pl-1">{{ 'auth.passwordMismatch' | translate }}</p>
         </div>
 
         <!-- Submit -->
@@ -147,7 +147,7 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
           </svg>
-          {{ isLoading ? 'Creating account...' : 'Create Account' }}
+          {{ isLoading ? ('auth.creatingAccount' | translate) : ('auth.createAccount' | translate) }}
         </button>
 
       </form>
@@ -155,20 +155,20 @@
       <!-- Divider -->
       <div class="flex items-center gap-3 my-6">
         <div class="flex-1 h-px bg-gray-200"></div>
-        <span class="text-gray-400 text-xs font-medium">already have an account?</span>
+        <span class="text-gray-400 text-xs font-medium">{{ 'auth.alreadyHaveAccount' | translate }}</span>
         <div class="flex-1 h-px bg-gray-200"></div>
       </div>
 
       <button (click)="goToLogin()"
               class="w-full py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-2xl font-bold active:scale-95 transition-all duration-300">
-        Sign In Instead
+        {{ 'auth.signInInstead' | translate }}
       </button>
 
     </div>
 
     <!-- Back to home -->
     <p class="text-center text-sm text-gray-500 mt-6">
-      <a routerLink="/" class="hover:text-yellow-600 font-medium transition-colors">← Back to Home</a>
+      <a routerLink="/" class="hover:text-yellow-600 font-medium transition-colors">← {{ 'auth.backToHome' | translate }}</a>
     </p>
 
   </div>

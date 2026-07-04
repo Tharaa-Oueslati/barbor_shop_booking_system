@@ -4,14 +4,15 @@ import { HaircutService } from "../../services/haircut.service";
 import { HaircutModel } from "../../../models/haircut.model";
 import { Router } from "@angular/router";
 import { AuthentificationService } from "../../services/authentification.service";
-import { UserModel} from "../../../models/UserModel";
-import {AppointmentsService} from "../../services/appointments.service";
-import {AppointmentModel} from "../../../models/AppointmentModel";
+import { UserModel } from "../../../models/UserModel";
+import { AppointmentsService } from "../../services/appointments.service";
+import { AppointmentModel } from "../../../models/AppointmentModel";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
@@ -31,7 +32,8 @@ export class HomepageComponent implements OnInit {
     private haircutService: HaircutService,
     private router: Router,
     private authService: AuthentificationService,
-    private appointmentsService: AppointmentsService
+    private appointmentsService: AppointmentsService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +101,7 @@ export class HomepageComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cancelling appointment', err);
-        this.cancelError = 'Could not cancel this appointment. Please try again.';
+        this.cancelError = this.translate.instant('errors.generic');
         this.isCancelling = false;
       }
     });

@@ -1,17 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {AuthentificationService} from "./services/authentification.service";
-import {UserModel} from "../models/UserModel";
+import { Component } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthentificationService } from "./services/authentification.service";
+import { UserModel } from "../models/UserModel";
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TranslateModule, LanguageSwitcherComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title:string="Barber Shop Booking System";
+  title: string = "Barber Shop Booking System";
   isLoggedIn = false;
   currentUser: UserModel | null = null;
 
@@ -35,7 +37,6 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
-
     window.location.reload();
   }
 }

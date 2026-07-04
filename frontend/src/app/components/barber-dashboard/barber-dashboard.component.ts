@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from "@angular/common";
+import { TranslateModule } from '@ngx-translate/core';
 import { AppointmentModel } from "../../../models/AppointmentModel";
 import { AppointmentsService } from "../../services/appointments.service";
 import { AuthentificationService } from "../../services/authentification.service";
@@ -12,7 +13,7 @@ interface AppointmentGroup {
 @Component({
   selector: 'app-barber-dashboard',
   standalone: true,
-  imports: [NgForOf, NgIf, NgClass],
+  imports: [NgForOf, NgIf, NgClass, TranslateModule],
   templateUrl: './barber-dashboard.component.html',
   styleUrl: './barber-dashboard.component.css'
 })

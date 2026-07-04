@@ -9,12 +9,13 @@ import { NgClass } from '@angular/common';
 import { BarberModel } from "../../../models/BarberModel";
 import { BarberService } from "../../services/barber.service";
 import { AuthentificationService } from "../../services/authentification.service";
-import { UserModel} from "../../../models/UserModel";
+import { UserModel } from "../../../models/UserModel";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, CommonModule],
+  imports: [ReactiveFormsModule, NgClass, CommonModule, TranslateModule],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
@@ -46,6 +47,7 @@ export class BookingComponent implements OnInit {
     private router: Router,
     private barberService: BarberService,
     private authService: AuthentificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class BookingComponent implements OnInit {
       next: (data) => this.activeBarbers = data,
       error: (err) => {
         console.error('Error loading barbers:', err);
-        this.errorMessage = 'Failed to load barbers. Please try again.';
+        this.errorMessage = this.translate.instant('errors.generic');
       }
     });
   }
@@ -106,7 +108,7 @@ export class BookingComponent implements OnInit {
       next: (data) => this.servicesList = data,
       error: (err) => {
         console.error('Error loading services:', err);
-        this.errorMessage = 'Failed to load services. Please try again.';
+        this.errorMessage = this.translate.instant('errors.generic');
       }
     });
   }
@@ -187,7 +189,7 @@ export class BookingComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.isSubmitting = false;
-          this.successMessage = `Appointment booked successfully! Your booking ID is ${response.id}.`;
+          this.successMessage = `${this.translate.instant('booking.successMessage')} ${response.id}.`;
           this.bookingForm.reset();
           setTimeout(() => {
             this.router.navigate(['/']);
@@ -196,7 +198,7 @@ export class BookingComponent implements OnInit {
         error: (err) => {
           this.isSubmitting = false;
           console.error('Booking failed:', err);
-          this.errorMessage = err.error?.message || 'Failed to create appointment. The selected time slot may no longer be available.';
+          this.errorMessage = err.error?.message || this.translate.instant('booking.failedMessage');
         }
       });
   }

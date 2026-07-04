@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
-import {AuthentificationService} from "../../../services/authentification.service";
-import {NgIf} from "@angular/common";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { AuthentificationService } from "../../../services/authentification.service";
+import { NgIf } from "@angular/common";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,8 @@ import {NgIf} from "@angular/common";
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    NgIf
+    NgIf,
+    TranslateModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -21,7 +23,12 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private router: Router,private authService:AuthentificationService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthentificationService,
+    private translate: TranslateService
+  ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -39,7 +46,7 @@ export class LoginComponent {
       return;
     }
 
-    this.isLoading    = true;
+    this.isLoading = true;
     this.errorMessage = '';
 
     this.authService.login(this.loginForm.value).subscribe({
@@ -58,11 +65,11 @@ export class LoginComponent {
       error: (err) => {
         this.isLoading = false;
         if (err.status === 404) {
-          this.errorMessage = 'User not found.';
+          this.errorMessage = this.translate.instant('auth.userNotFound');
         } else if (err.status === 401) {
-          this.errorMessage = 'Wrong password.';
+          this.errorMessage = this.translate.instant('auth.wrongPassword');
         } else {
-          this.errorMessage = 'Login failed. Please try again.';
+          this.errorMessage = this.translate.instant('auth.loginFailed');
         }
       }
     });

@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppointmentModel } from '../../../models/AppointmentModel';
 import { AppointmentsService } from '../../services/appointments.service';
-import {BarberService} from "../../services/barber.service";
+import { BarberService } from "../../services/barber.service";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })

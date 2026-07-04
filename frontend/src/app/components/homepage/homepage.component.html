@@ -6,36 +6,36 @@
     <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80"></div>
 
     <div class="relative text-center text-white px-6 max-w-3xl mx-auto">
-      <span class="text-yellow-400 font-bold tracking-widest text-sm uppercase mb-3 block">Premium Grooming</span>
+      <span class="text-yellow-400 font-bold tracking-widest text-sm uppercase mb-3 block">{{ 'home.heroTagline' | translate }}</span>
       <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
-        Fresh Cuts.<br />Sharp Style.
+        {{ 'home.heroTitle1' | translate }}<br />{{ 'home.heroTitle2' | translate }}
       </h1>
 
       <p class="text-gray-300 mt-4 text-base md:text-lg max-w-lg mx-auto">
-        The premier barber shop in Tunis — fast, clean, and meticulously professional.
+        {{ 'home.heroSubtitle' | translate }}
       </p>
 
       @if (isLoggedIn) {
         <p class="text-yellow-400 mt-4 text-sm font-medium">
-          Welcome back, {{ currentUser?.username }} 👋
+          {{ 'home.welcomeBack' | translate }}, {{ currentUser?.username }} 👋
         </p>
 
         <div class="mt-6">
           <button (click)="NavigateToBooking()"
                   class="w-full sm:w-auto px-10 py-4 bg-yellow-500 hover:bg-yellow-400 text-black rounded-full font-bold shadow-lg hover:shadow-yellow-500/20 active:scale-95 transition-all duration-300">
-            Book Your Seat
+            {{ 'common.bookNow' | translate }}
           </button>
         </div>
       } @else {
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button (click)="NavigateToBooking()"
                   class="w-full sm:w-auto px-10 py-4 bg-yellow-500 hover:bg-yellow-400 text-black rounded-full font-bold shadow-lg hover:shadow-yellow-500/20 active:scale-95 transition-all duration-300">
-            Book as Guest
+            {{ 'home.bookAsGuest' | translate }}
           </button>
 
           <button (click)="NavigateToLogin()"
                   class="w-full sm:w-auto px-10 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/30 rounded-full font-bold backdrop-blur-sm active:scale-95 transition-all duration-300">
-            Login to Book
+            {{ 'home.loginToBook' | translate }}
           </button>
         </div>
       }
@@ -51,8 +51,8 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </div>
         <div>
-          <p class="font-bold text-gray-900">Location</p>
-          <p class="text-sm text-gray-500 mt-0.5">Sidi Henri, Tunis</p>
+          <p class="font-bold text-gray-900">{{ 'home.location' | translate }}</p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ 'home.locationValue' | translate }}</p>
         </div>
       </div>
 
@@ -61,8 +61,8 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
         </div>
         <div>
-          <p class="font-bold text-gray-900">Call Us</p>
-          <p class="text-sm text-gray-500 mt-0.5">+216 00 000 000</p>
+          <p class="font-bold text-gray-900">{{ 'home.callUs' | translate }}</p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ 'home.phone' | translate }}</p>
         </div>
       </div>
 
@@ -71,8 +71,8 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </div>
         <div>
-          <p class="font-bold text-gray-900">Open Hours</p>
-          <p class="text-sm text-gray-500 mt-0.5">Every day 9:00 - 21:00</p>
+          <p class="font-bold text-gray-900">{{ 'home.openHours' | translate }}</p>
+          <p class="text-sm text-gray-500 mt-0.5">{{ 'home.openHoursValue' | translate }}</p>
         </div>
       </div>
 
@@ -81,11 +81,10 @@
   </section>
 
   <section class="px-5 py-16 md:py-24 text-center max-w-2xl mx-auto">
-    <h2 class="text-3xl font-bold mb-4">The Art of Grooming</h2>
+    <h2 class="text-3xl font-bold mb-4">{{ 'home.aboutTitle' | translate }}</h2>
     <div class="w-16 h-1 bg-yellow-500 mx-auto mb-6 rounded-full"></div>
     <p class="text-gray-600 text-base md:text-lg leading-relaxed">
-      We deliver modern haircuts, flawless fades, precise beard trims, and styling with absolute precision.
-      Our goal is simple: to make you look exceptionally sharp in the shortest time possible.
+      {{ 'home.aboutText' | translate }}
     </p>
   </section>
 
@@ -93,8 +92,8 @@
 
     <div class="flex justify-between items-end mb-8">
       <div>
-        <h2 class="text-3xl font-bold">Our Services</h2>
-        <p class="text-gray-500 mt-2">Transparent pricing, premium quality.</p>
+        <h2 class="text-3xl font-bold">{{ 'home.ourServices' | translate }}</h2>
+        <p class="text-gray-500 mt-2">{{ 'home.servicesSubtitle' | translate }}</p>
       </div>
     </div>
 
@@ -106,12 +105,12 @@
             {{ service.name }}
           </p>
           <p class="text-2xl font-black text-gray-800 mt-2">
-            {{ service.price }} <span class="text-sm font-medium text-gray-400">TND</span>
+            {{ service.price }} <span class="text-sm font-medium text-gray-400">{{ 'booking.tnd' | translate }}</span>
           </p>
         </div>
       } @empty {
         <div class="col-span-full text-center py-12 text-gray-400 font-medium animate-pulse">
-          Loading premium services...
+          {{ 'booking.loadingServices' | translate }}
         </div>
       }
 
@@ -121,7 +120,7 @@
 
   <section class="pb-16 md:pb-24 max-w-6xl mx-auto overflow-hidden pl-5 md:px-5">
 
-    <h2 class="text-3xl font-bold mb-8">Recent Cuts</h2>
+    <h2 class="text-3xl font-bold mb-8">{{ 'home.recentCuts' | translate }}</h2>
 
     <div class="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto pb-6 snap-x snap-mandatory pr-5 md:pr-0" style="scrollbar-width: none;">
 
@@ -145,9 +144,9 @@
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-yellow-500/20 blur-3xl rounded-full pointer-events-none"></div>
 
       <div class="relative z-10">
-        <h2 class="text-3xl md:text-4xl font-bold">Ready for a fresh look?</h2>
+        <h2 class="text-3xl md:text-4xl font-bold">{{ 'home.readyTitle' | translate }}</h2>
         <p class="text-gray-400 text-base md:text-lg mt-3 mb-8">
-          Skip the wait. Book your appointment in seconds.
+          {{ 'home.readySubtitle' | translate }}
         </p>
 
         @if (isLoggedIn) {
@@ -155,8 +154,8 @@
 
             <div class="flex justify-between items-end mb-8">
               <div>
-                <h2 class="text-3xl font-bold">My Tickets</h2>
-                <p class="text-gray-500 mt-2">Your upcoming and recent appointments.</p>
+                <h2 class="text-3xl font-bold">{{ 'home.myTickets' | translate }}</h2>
+                <p class="text-gray-500 mt-2">{{ 'home.myTicketsSubtitle' | translate }}</p>
               </div>
             </div>
 
@@ -171,7 +170,7 @@
                   <div>
                     <div class="bg-gray-900 px-6 py-4 flex items-center justify-between">
                       <div>
-                        <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest">Ticket</p>
+                        <p class="text-yellow-400 text-xs font-bold uppercase tracking-widest">{{ 'home.ticket' | translate }}</p>
                         <p class="text-white text-2xl font-black">#{{ appointment.id }}</p>
                       </div>
                       @if (appointment.status) {
@@ -182,29 +181,29 @@
                   'bg-gray-500 text-white': appointment.status === 'COMPLETED',
                   'bg-red-500 text-white': appointment.status === 'CANCELLED'
                 }">
-                  {{ appointment.status }}
+                  {{ 'common.' + appointment.status.toLowerCase() | translate }}
                 </span>
                       }
                     </div>
 
                     <div class="p-6 space-y-3">
                       <div>
-                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Service</p>
+                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">{{ 'home.service' | translate }}</p>
                         <p class="font-bold text-gray-900">{{ appointment.haircutTypeName }}</p>
                       </div>
 
                       <div>
-                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Barber</p>
+                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">{{ 'home.barber' | translate }}</p>
                         <p class="font-bold text-gray-900">{{ appointment.barberName }}</p>
                       </div>
 
                       <div class="flex justify-between pt-2 border-t border-gray-100">
                         <div>
-                          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Date</p>
+                          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">{{ 'common.date' | translate }}</p>
                           <p class="text-sm font-semibold text-gray-700">{{ appointment.date }}</p>
                         </div>
                         <div class="text-right">
-                          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Time</p>
+                          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">{{ 'common.time' | translate }}</p>
                           <p class="text-sm font-semibold text-gray-700">{{ appointment.startTime }}</p>
                         </div>
                       </div>
@@ -215,7 +214,7 @@
                     <div class="px-6 pb-6 mt-auto">
                       <button
                         class="w-full text-center text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100/70 py-2 rounded-xl transition-colors duration-200">
-                        Cancel Appointment
+                        {{ 'home.cancelAppointment' | translate }}
                       </button>
                     </div>
                   }
@@ -223,7 +222,7 @@
                 </div>
               } @empty {
                 <div class="col-span-full text-center py-12 text-gray-400 font-medium">
-                  You have no appointments yet.
+                  {{ 'home.noAppointments' | translate }}
                 </div>
               }
 
@@ -234,9 +233,9 @@
           @if (appointmentToCancel) {
             <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
               <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
-                <h3 class="text-xl font-bold text-gray-900">Cancel Appointment?</h3>
+                <h3 class="text-xl font-bold text-gray-900">{{ 'home.cancelConfirmTitle' | translate }}</h3>
                 <p class="text-gray-500 text-sm">
-                  Are you sure you want to cancel your ticket <span class="font-bold text-gray-800">#{{ appointmentToCancel.id }}</span> for a {{ appointmentToCancel.haircutTypeName }}? This action cannot be undone.
+                  {{ 'home.cancelConfirmText' | translate }} <span class="font-bold text-gray-800">#{{ appointmentToCancel.id }}</span> {{ 'home.cancelConfirmSuffix' | translate }}
                 </p>
 
                 @if (cancelError) {
@@ -250,16 +249,16 @@
                     [disabled]="isCancelling"
                     (click)="closeCancelModal()"
                     class="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors disabled:opacity-50">
-                    Keep Appointment
+                    {{ 'home.keepAppointment' | translate }}
                   </button>
                   <button
                     [disabled]="isCancelling"
                     (click)="confirmCancelAppointment()"
                     class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50">
                     @if (isCancelling) {
-                      <span>Cancelling...</span>
+                      <span>{{ 'home.cancelling' | translate }}</span>
                     } @else {
-                      <span>Confirm Cancellation</span>
+                      <span>{{ 'home.confirmCancellation' | translate }}</span>
                     }
                   </button>
                 </div>
@@ -271,12 +270,12 @@
           <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button (click)="NavigateToBooking()"
                     class="w-full sm:w-auto px-12 py-4 bg-yellow-500 hover:bg-yellow-400 text-black rounded-full font-bold shadow-lg active:scale-95 transition-all duration-300 text-lg">
-              Book as Guest
+              {{ 'home.bookAsGuest' | translate }}
             </button>
 
             <button (click)="NavigateToLogin()"
                     class="w-full sm:w-auto px-12 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/30 rounded-full font-bold backdrop-blur-sm active:scale-95 transition-all duration-300 text-lg">
-              Login to Book
+              {{ 'home.loginToBook' | translate }}
             </button>
           </div>
         }
