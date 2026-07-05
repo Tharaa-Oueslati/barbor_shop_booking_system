@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import { AuthentificationService } from "./services/authentification.service";
 import { UserModel } from "../models/UserModel";
 import { TranslateModule } from '@ngx-translate/core';
@@ -9,7 +9,7 @@ import {CapitalizeWordsPipe} from "./pipes/capitalize-words.pipe";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TranslateModule, LanguageSwitcherComponent, CapitalizeWordsPipe],
+  imports: [RouterOutlet, TranslateModule, LanguageSwitcherComponent, CapitalizeWordsPipe,RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

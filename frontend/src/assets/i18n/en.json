@@ -51,6 +51,8 @@
     "loginFailed": "Login failed. Please try again.",
     "usernameRequired": "Username is required.",
     "passwordRequired": "Password is required.",
+    "usernameOrEmail": "Username or Email",
+    "usernameOrEmailRequired": "Username or email is required.",
     "emailRequired": "Email is required.",
     "invalidEmail": "Please enter a valid email.",
     "passwordMinLength": "Password must be at least 6 characters."

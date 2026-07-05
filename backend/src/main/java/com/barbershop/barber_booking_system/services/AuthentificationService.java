@@ -6,6 +6,7 @@ import com.barbershop.barber_booking_system.dto.LoginRequest;
 import com.barbershop.barber_booking_system.dto.UserDTO;
 import com.barbershop.barber_booking_system.entities.Barber;
 import com.barbershop.barber_booking_system.entities.Role;
+import com.barbershop.barber_booking_system.entities.User;
 import com.barbershop.barber_booking_system.repositories.BarberRepository;
 import com.barbershop.barber_booking_system.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,21 @@ public class AuthentificationService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        var user = repository.findByUsername(request.username().toLowerCase())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "User not found"
-                ));
+
+        User user;
+        if (request.username().contains("@")){
+             user = repository.findByEmail(request.username())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "User not found"
+                    ));
+        }
+        else{
+             user = repository.findByUsername(request.username().toLowerCase())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "User not found"
+                    ));
+        }
+
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new ResponseStatusException(

@@ -7,10 +7,10 @@
 
   <!-- Links -->
   <div class="hidden md:flex gap-6 text-sm font-medium text-gray-300">
-    <a routerLink="" class="hover:text-yellow-500 transition">{{ 'common.home' | translate }}</a>
-    <a class="hover:text-yellow-500 transition">{{ 'common.services' | translate }}</a>
-    <a class="hover:text-yellow-500 transition">{{ 'common.gallery' | translate }}</a>
-    <a class="hover:text-yellow-500 transition">{{ 'common.contact' | translate }}</a>
+    <a routerLink="/" class="hover:text-yellow-500 transition">{{ 'common.home' | translate }}</a>
+    <a routerLink="/" fragment="services" class="hover:text-yellow-500 transition">{{ 'common.services' | translate }}</a>
+    <a routerLink="/" fragment="gallery" class="hover:text-yellow-500 transition">{{ 'common.gallery' | translate }}</a>
+    <a routerLink="/" fragment="contact" class="hover:text-yellow-500 transition">{{ 'common.contact' | translate }}</a>
   </div>
 
   <!-- Right side -->

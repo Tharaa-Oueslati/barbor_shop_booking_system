@@ -50,6 +50,8 @@
     "wrongPassword": "كلمة المرور غير صحيحة.",
     "loginFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
     "usernameRequired": "اسم المستخدم مطلوب.",
+    "usernameOrEmail": "اسم المستخدم أو البريد الإلكتروني",
+    "usernameOrEmailRequired": "اسم المستخدم أو البريد الإلكتروني مطلوب.",
     "passwordRequired": "كلمة المرور مطلوبة.",
     "emailRequired": "البريد الإلكتروني مطلوب.",
     "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",

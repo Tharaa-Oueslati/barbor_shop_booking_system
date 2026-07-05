@@ -18,3 +18,5 @@ export const routes: Routes = [
   {path:'admin',canActivate:[authGuard],data: { roles: ['ADMIN']},component:AdminDashboardComponent},
   {path:'barber',canActivate:[authGuard],data: { roles: ['BARBER']},component:BarberDashboardComponent}
 ];
+// app.config.ts (standalone) or wherever you provide the router
+

@@ -32,6 +32,8 @@
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "email": "Email",
+    "usernameOrEmail": "Nom d'utilisateur ou email",
+    "usernameOrEmailRequired": "Le nom d'utilisateur ou l'email est requis.",
     "forgotPassword": "Mot de passe oublié ?",
     "noAccount": "Vous n'avez pas de compte ?",
     "signUp": "S'inscrire",
