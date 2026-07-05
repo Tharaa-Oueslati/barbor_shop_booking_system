@@ -31,7 +31,7 @@ public class AuthentificationService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        var user = repository.findByUsername(request.username())
+        var user = repository.findByUsername(request.username().toLowerCase())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "User not found"
                 ));

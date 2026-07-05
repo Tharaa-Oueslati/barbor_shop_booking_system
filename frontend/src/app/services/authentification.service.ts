@@ -45,6 +45,7 @@ export class AuthentificationService {
 
     // 🔥 notify app instantly
     this.userSubject.next(null);
+
   }
 
   getToken(): string | null {

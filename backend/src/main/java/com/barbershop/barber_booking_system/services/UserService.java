@@ -43,6 +43,7 @@ public class UserService {
         User user = User.builder()
                 .username(dto.username())
                 .password(passwordEncoder.encode(dto.password()))
+                .email(dto.email())
                 .role(Role.valueOf(dto.role().toUpperCase()))
                 .build();
 

@@ -1,0 +1,27 @@
+{
+  "Coupe Homme": {
+    "fr": "Coupe Homme",
+    "en": "Men's Haircut",
+    "ar": "قص شعر رجالي"
+  },
+  "Coloration Homme": {
+    "fr": "Coloration Homme",
+    "en": "Men's Hair Coloring",
+    "ar": "صبغة شعر رجالي"
+  },
+  "Coupe + Barbe": {
+    "fr": "Coupe + Barbe",
+    "en": "Haircut + Beard Trim",
+    "ar": "قص شعر + حلاقة ذقن"
+  },
+  "Soin Capillaire": {
+    "fr": "Soin Capillaire",
+    "en": "Hair Care / Treatment",
+    "ar": "عناية بالشعر"
+  },
+  "barbe": {
+    "fr": "barbe",
+    "en": "Beard Shave/Trim",
+    "ar": "حلاقة ذقن"
+  }
+}

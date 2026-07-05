@@ -88,7 +88,14 @@
     "cancelConfirmSuffix": "هذا الإجراء لا يمكن التراجع عنه.",
     "keepAppointment": "الإبقاء على الموعد",
     "confirmCancellation": "تأكيد الإلغاء",
-    "cancelling": "جاري الإلغاء..."
+    "cancelling": "جاري الإلغاء...",
+    "servicesList": {
+      "coupehomme": "قص شعر رجالي",
+      "colorationhomme": "صبغة شعر رجالي",
+      "coupeetbarbe": "قص شعر و حلاقة ذقن",
+      "soincapillaire": "عناية بالشعر",
+      "barbe": "حلاقة ذقن"
+    }
   },
   "booking": {
     "pageTitle": "احجز موعدك",

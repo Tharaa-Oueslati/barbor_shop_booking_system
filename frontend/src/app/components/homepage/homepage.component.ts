@@ -8,16 +8,17 @@ import { UserModel } from "../../../models/UserModel";
 import { AppointmentsService } from "../../services/appointments.service";
 import { AppointmentModel } from "../../../models/AppointmentModel";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {CapitalizeWordsPipe} from "../../pipes/capitalize-words.pipe";
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, CapitalizeWordsPipe],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent implements OnInit {
-
+  protected readonly CapitalizeWordsPipe = CapitalizeWordsPipe;
   servicesList: HaircutModel[] = [];
   isLoggedIn = false;
   currentUser: UserModel | null = null;
@@ -114,5 +115,6 @@ export class HomepageComponent implements OnInit {
   NavigateToLogin() {
     this.router.navigate(['/login']);
   }
+
 
 }

@@ -11,11 +11,12 @@ import { BarberService } from "../../services/barber.service";
 import { AuthentificationService } from "../../services/authentification.service";
 import { UserModel } from "../../../models/UserModel";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {CapitalizeWordsPipe} from "../../pipes/capitalize-words.pipe";
 
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [ReactiveFormsModule, NgClass, CommonModule, TranslateModule],
+  imports: [ReactiveFormsModule, NgClass, CommonModule, TranslateModule, CapitalizeWordsPipe],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })

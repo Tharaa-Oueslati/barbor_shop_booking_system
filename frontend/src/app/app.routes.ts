@@ -14,6 +14,7 @@ export const routes: Routes = [
   {path: '', component: HomepageComponent},
   {path:'login', component:LoginComponent},
   {path:'signup', component:SignupComponent},
-  {path: 'booking',canActivate:[authGuard],data: { roles: ['CLIENT']}, component: BookingComponent},
-  {path:'admin',canActivate:[authGuard],data: { roles: ['ADMIN']},component:AdminDashboardComponent}
+  {path: 'booking',canActivate:[authGuard],data: { roles: ['CLIENT',"NONE"]}, component: BookingComponent},
+  {path:'admin',canActivate:[authGuard],data: { roles: ['ADMIN']},component:AdminDashboardComponent},
+  {path:'barber',canActivate:[authGuard],data: { roles: ['BARBER']},component:BarberDashboardComponent}
 ];

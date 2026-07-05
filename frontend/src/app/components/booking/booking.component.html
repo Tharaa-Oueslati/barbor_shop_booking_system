@@ -37,7 +37,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             <p class="text-sm font-medium text-gray-700">
-              {{ 'booking.bookingAs' | translate }} <span class="font-bold text-gray-900">{{ currentUser?.username }}</span>
+              {{ 'booking.bookingAs' | translate }} <span class="font-bold text-gray-900">{{ currentUser?.username | capitalizeWords}}</span>
             </p>
           </div>
 
@@ -161,7 +161,7 @@
   }
 </span>
                       <p class="font-bold text-lg text-gray-900 group-hover:text-yellow-600 transition-colors leading-tight">
-                        {{ service.name }}
+                        {{ 'home.servicesList.' + (service.name.toLowerCase().replaceAll(' ', '')) | translate }}
                       </p>
                     </div>
                     <div class="w-5 h-5 flex-shrink-0 rounded-full border-2 border-gray-300 flex items-center justify-center group-has-[:checked]:border-yellow-500 group-has-[:checked]:bg-yellow-500 transition-all duration-200">

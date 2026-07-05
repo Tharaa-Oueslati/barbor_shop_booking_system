@@ -21,7 +21,7 @@
 
     @if (isLoggedIn) {
       <span class="hidden sm:block text-sm text-gray-300">
-        {{ 'home.welcomeBack' | translate }}, <span class="font-semibold text-yellow-500">{{ currentUser?.username }}</span>
+        {{ 'home.welcomeBack' | translate }}, <span class="font-semibold text-yellow-500">{{ currentUser?.username  | capitalizeWords }}</span>
       </span>
       @if (currentUser?.role=="CLIENT"){
         <button (click)="bookNow()"

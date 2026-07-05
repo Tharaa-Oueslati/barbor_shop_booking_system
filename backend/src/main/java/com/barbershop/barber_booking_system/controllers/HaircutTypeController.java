@@ -22,7 +22,7 @@ public class HaircutTypeController {
 
     @GetMapping("/services")
     public ResponseEntity<List<HaircutTypeDTO>> services() {
-
+        System.out.println("HaircutTypeController");
         return ResponseEntity.ok(service.getAll());
     }
 

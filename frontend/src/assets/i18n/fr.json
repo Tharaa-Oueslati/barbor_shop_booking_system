@@ -88,7 +88,14 @@
     "cancelConfirmSuffix": "Cette action est irréversible.",
     "keepAppointment": "Garder le rendez-vous",
     "confirmCancellation": "Confirmer l'annulation",
-    "cancelling": "Annulation en cours..."
+    "cancelling": "Annulation en cours...",
+    "servicesList": {
+      "coupehomme": "Coupe Homme",
+      "colorationhomme": "Coloration Homme",
+      "coupeetbarbe": "Coupe et Barbe",
+      "soincapillaire": "Soin Capillaire",
+      "barbe": "barbe"
+    }
   },
   "booking": {
     "pageTitle": "Réservez Votre Rendez-vous",

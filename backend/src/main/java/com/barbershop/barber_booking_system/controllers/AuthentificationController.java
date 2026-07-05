@@ -19,6 +19,7 @@ public class AuthentificationController {
 
     @PostMapping("/login")  // ✅ just /login, not the full path again
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+
         return ResponseEntity.ok(authentificationService.login(request)); // ✅ wrapped in ResponseEntity.ok()
     }
 }
