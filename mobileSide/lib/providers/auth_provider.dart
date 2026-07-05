@@ -15,7 +15,7 @@ class AuthProvider extends ChangeNotifier {
   String? _token;
   AuthStatus _status = AuthStatus.initial;
   String? _errorMessage;
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService = ApiService.instance;
 
   User? get user => _user;
   String? get token => _token;

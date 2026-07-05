@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import '../models/appointment.dart';
 import '../models/barber.dart';
 import '../services/api_service.dart';
-import '../providers/auth_provider.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   List<Appointment> _appointments = [];
@@ -77,8 +76,7 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final api = ApiService();
-      _appointments = await api.getAllAppointments();
+      _appointments = await ApiService.instance.getAllAppointments();
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -94,8 +92,7 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final api = ApiService();
-      _appointments = await api.getBarberAppointments(barberId);
+      _appointments = await ApiService.instance.getBarberAppointments(barberId);
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -107,8 +104,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   Future<void> loadBarbers() async {
     try {
-      final api = ApiService();
-      _barbers = await api.getActiveBarbers();
+      _barbers = await ApiService.instance.getActiveBarbers();
       notifyListeners();
     } catch (e) {
       // Silently fail for barbers
@@ -117,8 +113,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   Future<bool> confirmAppointment(int appointmentId) async {
     try {
-      final api = ApiService();
-      await api.confirmAppointment(appointmentId);
+      await ApiService.instance.confirmAppointment(appointmentId);
 
       // Update local state
       final index = _appointments.indexWhere((a) => a.id == appointmentId);
@@ -138,8 +133,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   Future<bool> cancelAppointment(int appointmentId) async {
     try {
-      final api = ApiService();
-      await api.cancelAppointment(appointmentId);
+      await ApiService.instance.cancelAppointment(appointmentId);
 
       // Update local state
       final index = _appointments.indexWhere((a) => a.id == appointmentId);

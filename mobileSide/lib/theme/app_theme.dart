@@ -24,12 +24,12 @@ class AppTheme {
         surface: surfaceColor,
         error: cancelledColor,
       ),
-      cardTheme: const CardTheme(
+      cardTheme: CardThemeData(
         color: surfaceColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: borderColor),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+          side: const BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
       appBarTheme: const AppBarTheme(

@@ -166,7 +166,7 @@ class SettingsScreen extends StatelessWidget {
             subtitle: user?.email ?? 'No email',
           ),
           _buildSettingsTile(
-            icon: Icons.barbering_outlined,
+            icon: Icons.badge_outlined,
             title: 'Role',
             subtitle: user?.isAdmin == true ? 'Administrator' : 'Barber',
           ),

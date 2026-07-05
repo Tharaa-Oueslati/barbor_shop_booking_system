@@ -10,6 +10,11 @@ class ApiService {
   // For iOS simulator, use: http://localhost:8080/api
   // For real device, use your machine's IP: http://192.168.x.x:8080/api
 
+  static final ApiService _instance = ApiService._internal();
+  factory ApiService() => _instance;
+  ApiService._internal();
+  static ApiService get instance => _instance;
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<String?> _getToken() async {
