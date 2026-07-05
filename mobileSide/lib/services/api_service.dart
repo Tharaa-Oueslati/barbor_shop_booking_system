@@ -6,7 +6,7 @@ import '../models/appointment.dart';
 import '../models/barber.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:8080/api'; // Android emulator localhost
+  static const String baseUrl = 'http://localhost:8080/api'; // Android emulator localhost
   // For iOS simulator, use: http://localhost:8080/api
   // For real device, use your machine's IP: http://192.168.x.x:8080/api
 

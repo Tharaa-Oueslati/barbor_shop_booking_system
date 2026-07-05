@@ -13,11 +13,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
     _checkAuth();
-  }
+  });
+}
 
   Future<void> _checkAuth() async {
     final authProvider = context.read<AuthProvider>();
