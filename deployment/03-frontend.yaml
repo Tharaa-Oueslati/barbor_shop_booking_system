@@ -17,7 +17,7 @@ spec:
         - name: harbor-pull-secret
       containers:
         - name: frontend
-          image: harbor.local/barber-shop/frontend:latest   # <-- set your real tag
+          image: 192.168.100.20/barber-shop/frontend:latest   # <-- set your real tag
           ports:
             - containerPort: 80
           readinessProbe:
