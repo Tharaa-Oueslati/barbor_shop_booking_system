@@ -60,11 +60,8 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-  volumeClaimTemplates:
-    - metadata:
+  volumes :
+    - name:
         name: mysql-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 2Gi
+        emptyDir: {}
+      
