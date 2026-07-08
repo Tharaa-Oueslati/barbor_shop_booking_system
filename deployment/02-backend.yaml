@@ -33,6 +33,8 @@ spec:
                   key: MYSQL_ROOT_PASSWORD
             - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
               value: com.mysql.cj.jdbc.Driver
+            - name: SPRING_JPA_DATABASE_PLATFORM
+              value: org.hibernate.dialect.MySQLDialect
             - name: SPRING_JPA_HIBERNATE_DDL_AUTO
               value: "update"   # fine for a lab; use "validate" + migrations (Flyway/Liquibase) later
           resources:
