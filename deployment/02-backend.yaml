@@ -17,7 +17,7 @@ spec:
         - name: harbor-pull-secret
       containers:
         - name: backend
-          image: 192.168.100.20/barber-shop/backend:latest
+          image: 192.168.100.20:5000/barber-shop/backend:latest
           imagePullPolicy: Always    # <-- set your real tag
           ports:
             - containerPort: 8080
