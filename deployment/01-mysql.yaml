@@ -61,7 +61,6 @@ spec:
               cpu: 500m
               memory: 512Mi
   volumes :
-    - name:
-        name: mysql-data
+    - name: mysql-data
         emptyDir: {}
       
